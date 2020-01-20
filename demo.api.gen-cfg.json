@@ -1,0 +1,14 @@
+{
+  "apiPackage": "virtu.systems.demo.api",
+  "modelPackage": "virtu.systems.demo.api.dto",
+  "configPackage": "virtu.systems.demo.cfg",
+  "sourceFolder": "src/main/java",
+  "hideGenerationTimestamp": true,
+  "withXml": false,
+  "dateLibrary": "legacy",
+  "java8": false,
+  "useOptional": true,
+  "library": "spring-boot",
+  "interfaceOnly": false,
+  "useTags": true
+}

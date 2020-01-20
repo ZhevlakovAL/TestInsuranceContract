@@ -1,0 +1,640 @@
+swagger: "2.0"
+info:
+  description: "insurance contract"
+  version: "0.1.0"
+  title: "insurance contract"
+  termsOfService: ""
+  contact:
+    email: "ZhevlakovAL@gmail.com"
+host: "localhost:8080"
+basePath: "/api/v1"
+tags:
+  - name: "InsuranceHolder"
+    description: "Insurance Holder"
+  - name: "Contract"
+    description: "insurance contract"
+  - name: "RealEstate"
+    description: "Real Estate"
+  - name: "Calculate"
+    description: "Calculate insurance premium"
+schemes:
+  - "http"
+
+paths:
+  /insuranceHolders:
+    get:
+      tags:
+        - "InsuranceHolder"
+      summary: "InsuranceHolder list"
+      description:
+        Список страхователей
+      operationId: "getInsuranceHolders"
+      produces:
+        - 'application/json'
+      parameters:
+        - in: query
+          name: lastName
+          type: string
+          required: false
+        - in: query
+          name: firstName
+          type: string
+          required: false
+        - in: query
+          name: middleName
+          type: string
+          required: false
+        - in: query
+          name: passportSeries
+          type: string
+          required: false
+        - in: query
+          name: passportId
+          type: string
+          required: false
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/InsuranceHoldersResponse'
+
+  /insuranceHolder/{id}:
+    parameters:
+      - in: path
+        name: id
+        type: integer
+        format: int64
+        description: "Id of insuranceHolder"
+        required: true
+    get:
+      tags:
+        - "InsuranceHolder"
+      summary: "InsuranceHolder"
+      operationId: getInsuranceHolderById
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/InsuranceHolder'
+    put:
+      tags:
+        - "InsuranceHolder"
+      summary: "Update Insurance Holder"
+      description: "Изменение данных страхователя"
+      operationId: putInsuranceHolder
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: insuranceHolder
+          required: true
+          schema:
+            $ref: '#/definitions/InsuranceHolderRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/InsuranceHolder'
+    post:
+      tags:
+        - "InsuranceHolder"
+      summary: "Add new Insurance Holder"
+      description: "Добавление нового страхователя"
+      operationId: postInsuranceHolder
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: insuranceHolder
+          required: true
+          schema:
+            $ref: '#/definitions/InsuranceHolderRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/InsuranceHolder'
+    delete:
+      tags:
+        - "InsuranceHolder"
+      summary: "Delete InsuranceHolder"
+      operationId: deleteInsuranceHolderById
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/InsuranceHolder'
+
+  /contracts:
+    get:
+      tags:
+        - "Contract"
+      summary: "contract list"
+      description:
+        Список договоров
+      operationId: "getContracts"
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ContractsResponse'
+
+  /contract/{id}:
+    parameters:
+      - in: path
+        name: id
+        type: integer
+        format: int64
+        description: "Id of Contract"
+        required: true
+    get:
+      tags:
+        - "Contract"
+      summary: "Contract"
+      operationId: getContractById
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+    put:
+      tags:
+        - "Contract"
+      summary: "Update Contract"
+      description: "Изменение данных договора"
+      operationId: putContract
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: contract
+          required: true
+          schema:
+            $ref: '#/definitions/ContractUpdateRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+    post:
+      tags:
+        - "Contract"
+      summary: "Add new Contract"
+      description: "Добавление нового договора"
+      operationId: postContract
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: contract
+          required: true
+          schema:
+            $ref: '#/definitions/ContractCreateRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+
+  /calculate:
+    post:
+      tags:
+        - "Calculate"
+      summary: "calculate insurance premium"
+      description:
+        Список типов недвижимости
+      operationId: "calculateInsurancePremium"
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: contract
+          required: true
+          schema:
+            $ref: '#/definitions/CalculateInsurancePremiumRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CalculateInsurancePremiumResponse'
+
+  /realEstate/types:
+    get:
+      tags:
+        - "RealEstate"
+      summary: "type list"
+      description:
+        Список типов недвижимости
+      operationId: "getRealEstateTypes"
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/RealEstateTypesResponse'
+
+definitions:
+
+  InsuranceHolder:
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 123123
+      lastName:
+        type: string
+        example: "Иванов"
+      firstName:
+        type: string
+        example: "Иван"
+      middleName:
+        type: string
+        example: "Иванович"
+      passportSeries:
+        type: string
+        example: "1234"
+      passportId:
+        type: string
+        example: "654321"
+      birthDate:
+        type: string
+        format: date
+        example: 'YYYY-MM-DD'
+        description: "Дата рождения. 'YYYY-MM-DD'"
+  InsuranceHolderRequest:
+    properties:
+      lastName:
+        type: string
+        example: "Иванов"
+      firstName:
+        type: string
+        example: "Иван"
+      middleName:
+        type: string
+        example: "Иванович"
+      passportSeries:
+        type: string
+        example: "1234"
+      passportId:
+        type: string
+        example: "654321"
+      birthDate:
+        type: string
+        format: date
+        example: 'YYYY-MM-DD'
+        description: "Дата рождения. 'YYYY-MM-DD'"
+  InsuranceHoldersResponse:
+    properties:
+      insuranceHolders:
+        type: array
+        items:
+          $ref: '#/definitions/InsuranceHolder'
+
+  Contract:
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 123123
+      insuranceAmount:
+        type: integer
+        format: int64
+        example: 123123
+      validityPeriodFrom:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      validityPeriodTo:
+        type: string
+        format: date
+        example: '2020-03-01'
+        description: "'YYYY-MM-DD'"
+      insuranceObject:
+        $ref: '#/definitions/RealEstate'
+      insurancePremium:
+        type: integer
+        format: int64
+        example: 123123
+      contractNumber:
+        type: integer
+        format: int32
+        example: 123123
+      calculatedDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      conclusionDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      insuranceHolder:
+        $ref: '#/definitions/InsuranceHolder'
+      description:
+        type: string
+        example: 'Договор страхования имущества'
+
+  ContractCreateRequest:
+    properties:
+      insuranceAmount:
+        type: integer
+        format: int64
+        example: 123123
+      validityPeriodFrom:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      validityPeriodTo:
+        type: string
+        format: date
+        example: '2020-03-01'
+        description: "'YYYY-MM-DD'"
+      insuranceObject:
+        $ref: '#/definitions/RealEstateCreate'
+      insurancePremium:
+        type: integer
+        format: int64
+        example: 123123
+      contractNumber:
+        type: integer
+        format: int32
+        example: 123123
+      calculatedDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      conclusionDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      insuranceHolderId:
+        type: integer
+        format: int64
+        example: 123123
+      description:
+        type: string
+        example: 'Договор страхования имущества'
+
+  ContractsResponse:
+    type: object
+    properties:
+      contracts:
+        type: array
+        items:
+          $ref: '#/definitions/Contract'
+
+  ContractUpdateRequest:
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 123123
+      insuranceAmount:
+        type: integer
+        format: int64
+        example: 123123
+      validityPeriodFrom:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      validityPeriodTo:
+        type: string
+        format: date
+        example: '2020-03-01'
+        description: "'YYYY-MM-DD'"
+      insuranceObject:
+        $ref: '#/definitions/RealEstate'
+      insurancePremium:
+        type: integer
+        format: int64
+        example: 123123
+      contractNumber:
+        type: integer
+        format: int32
+        example: 123123
+      calculatedDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      conclusionDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      insuranceHolderId:
+        type: integer
+        format: int64
+        example: 123123
+      description:
+        type: string
+        example: 'Договор страхования имущества'
+
+  RealEstate:
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 123123
+      type:
+        type: string
+        example: "Квартира"
+      constructionYear:
+        type: integer
+        example: 2012
+      square:
+        type: number
+        format: double
+        example: 32
+      state:
+        type: string
+        example: "Россия"
+        description: "государство"
+      index:
+        type: string
+        example: "23452"
+        description: "индекс"
+      region:
+        type: string
+        example: "Томская"
+        description: "республика, край, область"
+      area:
+        type: string
+        example: "Советский"
+        description: "район"
+      settlement:
+        type: string
+        example: ""
+        description: "населённый пункт"
+      street:
+        type: string
+        example: "Тютчева"
+        description: "улица"
+      house:
+        type: integer
+        example: 3
+        description: "дом"
+      housing:
+        type: string
+        example: "2"
+        description: "корпус"
+      structure:
+        type: string
+        example: ""
+        description: "строение"
+      apartment:
+        type: integer
+        example: 34
+        description: "квартира"
+
+  RealEstateCreate:
+    properties:
+      type:
+        type: string
+        example: "Квартира"
+      constructionYear:
+        type: integer
+        example: 2012
+      square:
+        type: number
+        format: double
+        example: 32
+      state:
+        type: string
+        example: "Россия"
+        description: "государство"
+      index:
+        type: string
+        example: "23452"
+        description: "индекс"
+      region:
+        type: string
+        example: "Томская"
+        description: "республика, край, область"
+      area:
+        type: string
+        example: "Советский"
+        description: "район"
+      settlement:
+        type: string
+        example: ""
+        description: "населённый пункт"
+      street:
+        type: string
+        example: "Тютчева"
+        description: "улица"
+      house:
+        type: integer
+        example: 3
+        description: "дом"
+      housing:
+        type: string
+        example: "2"
+        description: "корпус"
+      structure:
+        type: string
+        example: ""
+        description: "строение"
+      apartment:
+        type: integer
+        example: 34
+        description: "квартира"
+
+  CalculateInsurancePremiumRequest:
+    properties:
+      insuranceAmount:
+        type: integer
+        format: int64
+        example: 123123
+      type:
+        type: string
+        example: "Квартира"
+      constructionYear:
+        type: integer
+        example: 2012
+      square:
+        type: number
+        format: double
+        example: 32
+      validityPeriodFrom:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      validityPeriodTo:
+        type: string
+        format: date
+        example: '2020-03-01'
+        description: "'YYYY-MM-DD'"
+
+  CalculateInsurancePremiumResponse:
+    properties:
+      insuranceAmount:
+        type: integer
+        format: int64
+        example: 123123
+      type:
+        type: string
+        example: "Квартира"
+      constructionYear:
+        type: integer
+        example: 2012
+      square:
+        type: number
+        format: double
+        example: 32
+      validityPeriodFrom:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+      validityPeriodTo:
+        type: string
+        format: date
+        example: '2020-03-01'
+        description: "'YYYY-MM-DD'"
+      insurancePremium:
+        type: integer
+        format: int64
+        example: 123123
+      calculatedDate:
+        type: string
+        format: date
+        example: '2020-01-01'
+        description: "'YYYY-MM-DD'"
+
+  RealEstateTypesResponse:
+    type: object
+    properties:
+      types:
+        type: array
+        items:
+          type: string
+          example: "Квартира"
