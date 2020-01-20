@@ -2,10 +2,7 @@ package virtu.systems.demo.dao.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -20,6 +17,7 @@ import java.util.Date;
 @EqualsAndHashCode
 public class InsuranceHolder {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false)

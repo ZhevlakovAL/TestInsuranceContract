@@ -9,16 +9,20 @@ import virtu.systems.demo.dao.entity.InsuranceHolder;
 
 import java.util.List;
 
-@org.mapstruct.Mapper
+@org.mapstruct.Mapper(componentModel = "spring")
 public interface InsuranceHolderMapper {
 
     InsuranceHolderMapper INSTANCE = Mappers.getMapper(InsuranceHolderMapper.class);
 
     InsuranceHolderDto toDto(InsuranceHolder insuranceHolder);
 
-    InsuranceHoldersResponseDto toResponse(List<InsuranceHolder> insuranceHolders);
+    List<InsuranceHolderDto> toDto(List<InsuranceHolder> insuranceHolders);
 
-    @Mapping(target = "id", ignore = true)
+    default InsuranceHoldersResponseDto toResponse(List<InsuranceHolder> insuranceHolders) {
+        return new InsuranceHoldersResponseDto().insuranceHolders(toDto(insuranceHolders));
+    }
+
+    //@Mapping(target = "id", ignore = true)
     InsuranceHolder toDao(InsuranceHolderRequestDto insuranceHolderRequestDto);
 
 }
