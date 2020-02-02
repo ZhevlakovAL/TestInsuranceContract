@@ -41,11 +41,18 @@ public class InsuranceHolderSvc {
     public InsuranceHolderDto add(
             final InsuranceHolderRequestDto eventRequestDto
     ) {
-        return Optional.of(eventRequestDto)
+        InsuranceHolder insuranceHolder
+                = InsuranceHolderMapper.INSTANCE.toDao(eventRequestDto);
+        InsuranceHolder savedInsuranceHolder = insuranceHolderRepo.save(insuranceHolder);
+        InsuranceHolderDto insuranceHolderDto = InsuranceHolderMapper.INSTANCE.toDto(savedInsuranceHolder);
+        return insuranceHolderDto;
+/*        return
+
+                Optional.of(eventRequestDto)
                 .map(InsuranceHolderMapper.INSTANCE::toDao)
                 .map(insuranceHolderRepo::save)
                 .map(InsuranceHolderMapper.INSTANCE::toDto)
-                .get();
+                .get();*/
     }
 
 }
