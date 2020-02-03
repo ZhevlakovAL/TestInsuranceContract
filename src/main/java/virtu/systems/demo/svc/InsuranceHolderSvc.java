@@ -1,7 +1,6 @@
 package virtu.systems.demo.svc;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +11,8 @@ import virtu.systems.demo.dao.entity.InsuranceHolder;
 import virtu.systems.demo.dao.repo.InsuranceHolderRepo;
 import virtu.systems.demo.map.InsuranceHolderMapper;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @Slf4j
 @Service
@@ -41,18 +35,11 @@ public class InsuranceHolderSvc {
     public InsuranceHolderDto add(
             final InsuranceHolderRequestDto eventRequestDto
     ) {
-        InsuranceHolder insuranceHolder
-                = InsuranceHolderMapper.INSTANCE.toDao(eventRequestDto);
-        InsuranceHolder savedInsuranceHolder = insuranceHolderRepo.save(insuranceHolder);
-        InsuranceHolderDto insuranceHolderDto = InsuranceHolderMapper.INSTANCE.toDto(savedInsuranceHolder);
-        return insuranceHolderDto;
-/*        return
-
-                Optional.of(eventRequestDto)
-                .map(InsuranceHolderMapper.INSTANCE::toDao)
-                .map(insuranceHolderRepo::save)
-                .map(InsuranceHolderMapper.INSTANCE::toDto)
-                .get();*/
+        return Function.<InsuranceHolderRequestDto>identity()
+                .andThen(InsuranceHolderMapper.INSTANCE::toDao)
+                .andThen(x -> insuranceHolderRepo.save(x))
+                .andThen(InsuranceHolderMapper.INSTANCE::toDto)
+                .apply(eventRequestDto);
     }
 
 }

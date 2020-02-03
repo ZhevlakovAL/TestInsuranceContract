@@ -1,5 +1,6 @@
 package virtu.systems.demo.map;
 
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import virtu.systems.demo.api.dto.InsuranceHolderDto;
 import virtu.systems.demo.api.dto.InsuranceHolderRequestDto;
@@ -21,23 +22,8 @@ public interface InsuranceHolderMapper {
         return new InsuranceHoldersResponseDto().insuranceHolders(toDto(insuranceHolders));
     }
 
-    default InsuranceHolder toDao(InsuranceHolderRequestDto insuranceHolderRequestDto) {
-        if ( insuranceHolderRequestDto == null ) {
-            return null;
-        }
-
-        InsuranceHolder insuranceHolder = new InsuranceHolder();
-        insuranceHolder.setFirstName(insuranceHolderRequestDto.getFirstName());
-        insuranceHolder.setLastName(insuranceHolderRequestDto.getLastName());
-        insuranceHolder.setMiddleName(insuranceHolderRequestDto.getMiddleName());
-        insuranceHolder.setPassportId(insuranceHolderRequestDto.getPassportId());
-        insuranceHolder.setPassportSeries(insuranceHolderRequestDto.getPassportSeries());
-        insuranceHolder.setBirthDate(convertUtilToSql(insuranceHolderRequestDto.getBirthDate()));
-
-        return insuranceHolder;
-    }
-
-    //InsuranceHolder toDao(InsuranceHolderRequestDto insuranceHolderRequestDto);
+    @Mapping(target = "id", ignore = true)
+    InsuranceHolder toDao(InsuranceHolderRequestDto insuranceHolderRequestDto);
 
     default java.sql.Date convertUtilToSql(java.util.Date uDate) {
         return new java.sql.Date(uDate.getTime());
