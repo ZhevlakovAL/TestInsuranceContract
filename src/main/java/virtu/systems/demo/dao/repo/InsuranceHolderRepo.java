@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface InsuranceHolderRepo
-        extends JpaRepository<InsuranceHolder, UUID>,
+        extends JpaRepository<InsuranceHolder, Long>,
         JpaSpecificationExecutor<InsuranceHolder> {
 
 }
