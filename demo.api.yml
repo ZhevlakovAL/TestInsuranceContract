@@ -125,8 +125,6 @@ paths:
         - "InsuranceHolder"
       summary: "Delete InsuranceHolder"
       operationId: deleteInsuranceHolderById
-      consumes:
-        - 'application/json'
       produces:
         - 'application/json'
       responses:
