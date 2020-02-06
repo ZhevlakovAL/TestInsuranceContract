@@ -46,15 +46,16 @@ public class InsuranceHolderSvc {
 
     @Transactional
     public InsuranceHolderDto add(
-            final InsuranceHolderRequestDto eventRequestDto
+            final InsuranceHolderRequestDto dto
     ) {
         return Function.<InsuranceHolderRequestDto>identity()
                 .andThen(InsuranceHolderMapper.INSTANCE::toDao)
                 .andThen(x -> repo.save(x))
                 .andThen(InsuranceHolderMapper.INSTANCE::toDto)
-                .apply(eventRequestDto);
+                .apply(dto);
     }
 
+    @Transactional
     public InsuranceHolderDto update(
             final Long id,
             final InsuranceHolderRequestDto insuranceHolder) {
@@ -70,6 +71,7 @@ public class InsuranceHolderSvc {
                 .apply(id);
     }
 
+    @Transactional
     public InsuranceHolderDto delete(
             final Long id) {
         return Function.<Long>identity()

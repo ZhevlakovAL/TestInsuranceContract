@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import virtu.systems.demo.svc.ContractSvc;
+import virtu.systems.demo.svc.InsuranceHolderSvc;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -29,72 +31,27 @@ import java.util.List;
 @Controller
 public class ContractApiController implements ContractApi {
 
-    private static final Logger log = LoggerFactory.getLogger(ContractApiController.class);
+    private final ContractSvc service;
 
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
-
-    @org.springframework.beans.factory.annotation.Autowired
-    public ContractApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    public ContractApiController(ContractSvc contractSvc) {
+        this.service = contractSvc;
     }
 
-    public ResponseEntity<ContractDto> getContractById(@ApiParam(value = "Id of Contract",required=true) @PathVariable("id") Long id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<ContractDto>(objectMapper.readValue("{  \"calculatedDate\" : \"2020-01-01\",  \"insuranceAmount\" : 123123,  \"insurancePremium\" : 123123,  \"validityPeriodFrom\" : \"2020-01-01\",  \"insuranceObject\" : {    \"area\" : \"Советский\",    \"constructionYear\" : 2012,    \"housing\" : \"2\",    \"index\" : \"23452\",    \"type\" : \"Квартира\",    \"house\" : 3,    \"structure\" : \"\",    \"settlement\" : \"\",    \"square\" : 32.0,    \"street\" : \"Тютчева\",    \"id\" : 123123,    \"state\" : \"Россия\",    \"region\" : \"Томская\",    \"apartment\" : 34  },  \"conclusionDate\" : \"2020-01-01\",  \"insuranceHolder\" : {    \"lastName\" : \"Иванов\",    \"firstName\" : \"Иван\",    \"middleName\" : \"Иванович\",    \"id\" : 123123,    \"passportSeries\" : \"1234\",    \"birthDate\" : \"YYYY-MM-DD\",    \"passportId\" : \"654321\"  },  \"validityPeriodTo\" : \"2020-03-01\",  \"contractNumber\" : 123123,  \"description\" : \"Договор страхования имущества\",  \"id\" : 123123}", ContractDto.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ContractDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<ContractDto>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ContractDto> getContractById(final Long id) {
+        return ResponseEntity.ok(service.get(id));
     }
 
     public ResponseEntity<ContractsResponseDto> getContracts() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<ContractsResponseDto>(objectMapper.readValue("{  \"contracts\" : [ {    \"calculatedDate\" : \"2020-01-01\",    \"insuranceAmount\" : 123123,    \"insurancePremium\" : 123123,    \"validityPeriodFrom\" : \"2020-01-01\",    \"insuranceObject\" : {      \"area\" : \"Советский\",      \"constructionYear\" : 2012,      \"housing\" : \"2\",      \"index\" : \"23452\",      \"type\" : \"Квартира\",      \"house\" : 3,      \"structure\" : \"\",      \"settlement\" : \"\",      \"square\" : 32.0,      \"street\" : \"Тютчева\",      \"id\" : 123123,      \"state\" : \"Россия\",      \"region\" : \"Томская\",      \"apartment\" : 34    },    \"conclusionDate\" : \"2020-01-01\",    \"insuranceHolder\" : {      \"lastName\" : \"Иванов\",      \"firstName\" : \"Иван\",      \"middleName\" : \"Иванович\",      \"id\" : 123123,      \"passportSeries\" : \"1234\",      \"birthDate\" : \"YYYY-MM-DD\",      \"passportId\" : \"654321\"    },    \"validityPeriodTo\" : \"2020-03-01\",    \"contractNumber\" : 123123,    \"description\" : \"Договор страхования имущества\",    \"id\" : 123123  }, {    \"calculatedDate\" : \"2020-01-01\",    \"insuranceAmount\" : 123123,    \"insurancePremium\" : 123123,    \"validityPeriodFrom\" : \"2020-01-01\",    \"insuranceObject\" : {      \"area\" : \"Советский\",      \"constructionYear\" : 2012,      \"housing\" : \"2\",      \"index\" : \"23452\",      \"type\" : \"Квартира\",      \"house\" : 3,      \"structure\" : \"\",      \"settlement\" : \"\",      \"square\" : 32.0,      \"street\" : \"Тютчева\",      \"id\" : 123123,      \"state\" : \"Россия\",      \"region\" : \"Томская\",      \"apartment\" : 34    },    \"conclusionDate\" : \"2020-01-01\",    \"insuranceHolder\" : {      \"lastName\" : \"Иванов\",      \"firstName\" : \"Иван\",      \"middleName\" : \"Иванович\",      \"id\" : 123123,      \"passportSeries\" : \"1234\",      \"birthDate\" : \"YYYY-MM-DD\",      \"passportId\" : \"654321\"    },    \"validityPeriodTo\" : \"2020-03-01\",    \"contractNumber\" : 123123,    \"description\" : \"Договор страхования имущества\",    \"id\" : 123123  } ]}", ContractsResponseDto.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ContractsResponseDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<ContractsResponseDto>(HttpStatus.NOT_IMPLEMENTED);
+        return ResponseEntity.ok(service.getAll());
     }
 
-    public ResponseEntity<ContractDto> postContract(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ContractCreateRequestDto contract) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<ContractDto>(objectMapper.readValue("{  \"calculatedDate\" : \"2020-01-01\",  \"insuranceAmount\" : 123123,  \"insurancePremium\" : 123123,  \"validityPeriodFrom\" : \"2020-01-01\",  \"insuranceObject\" : {    \"area\" : \"Советский\",    \"constructionYear\" : 2012,    \"housing\" : \"2\",    \"index\" : \"23452\",    \"type\" : \"Квартира\",    \"house\" : 3,    \"structure\" : \"\",    \"settlement\" : \"\",    \"square\" : 32.0,    \"street\" : \"Тютчева\",    \"id\" : 123123,    \"state\" : \"Россия\",    \"region\" : \"Томская\",    \"apartment\" : 34  },  \"conclusionDate\" : \"2020-01-01\",  \"insuranceHolder\" : {    \"lastName\" : \"Иванов\",    \"firstName\" : \"Иван\",    \"middleName\" : \"Иванович\",    \"id\" : 123123,    \"passportSeries\" : \"1234\",    \"birthDate\" : \"YYYY-MM-DD\",    \"passportId\" : \"654321\"  },  \"validityPeriodTo\" : \"2020-03-01\",  \"contractNumber\" : 123123,  \"description\" : \"Договор страхования имущества\",  \"id\" : 123123}", ContractDto.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ContractDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<ContractDto>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ContractDto> postContract(final ContractCreateRequestDto contract) {
+        return ResponseEntity.ok(service.add(contract));
     }
 
-    public ResponseEntity<ContractDto> putContract(@ApiParam(value = "Id of Contract",required=true) @PathVariable("id") Long id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody ContractUpdateRequestDto contract) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<ContractDto>(objectMapper.readValue("{  \"calculatedDate\" : \"2020-01-01\",  \"insuranceAmount\" : 123123,  \"insurancePremium\" : 123123,  \"validityPeriodFrom\" : \"2020-01-01\",  \"insuranceObject\" : {    \"area\" : \"Советский\",    \"constructionYear\" : 2012,    \"housing\" : \"2\",    \"index\" : \"23452\",    \"type\" : \"Квартира\",    \"house\" : 3,    \"structure\" : \"\",    \"settlement\" : \"\",    \"square\" : 32.0,    \"street\" : \"Тютчева\",    \"id\" : 123123,    \"state\" : \"Россия\",    \"region\" : \"Томская\",    \"apartment\" : 34  },  \"conclusionDate\" : \"2020-01-01\",  \"insuranceHolder\" : {    \"lastName\" : \"Иванов\",    \"firstName\" : \"Иван\",    \"middleName\" : \"Иванович\",    \"id\" : 123123,    \"passportSeries\" : \"1234\",    \"birthDate\" : \"YYYY-MM-DD\",    \"passportId\" : \"654321\"  },  \"validityPeriodTo\" : \"2020-03-01\",  \"contractNumber\" : 123123,  \"description\" : \"Договор страхования имущества\",  \"id\" : 123123}", ContractDto.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ContractDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<ContractDto>(HttpStatus.NOT_IMPLEMENTED);
+        //TODO: объединить DTO для создания и редактирования договора
+    public ResponseEntity<ContractDto> putContract(final Long id, final ContractUpdateRequestDto contract) {
+        return ResponseEntity.ok(service.update(contract));
     }
 
 }

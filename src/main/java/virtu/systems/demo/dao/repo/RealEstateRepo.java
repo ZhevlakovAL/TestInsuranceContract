@@ -5,12 +5,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import virtu.systems.demo.dao.entity.RealEstate;
 
-import java.util.UUID;
-
 
 @Repository
 public interface RealEstateRepo
-        extends JpaRepository<RealEstate, UUID>,
+        extends JpaRepository<RealEstate, Long>,
         JpaSpecificationExecutor<RealEstate> {
 
 }

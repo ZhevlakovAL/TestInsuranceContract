@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import virtu.systems.demo.dao.entity.InsuranceHolder;
 
-import java.util.UUID;
-
 
 @Repository
 public interface InsuranceHolderRepo
