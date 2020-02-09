@@ -16,7 +16,7 @@ public class AppErrorController implements ErrorController{
     @ResponseBody
     public String getErrorPath() {
         // TODO Auto-generated method stub
-        return "No Mapping Found";
+        return "Internal Error";
     }
 
 }
