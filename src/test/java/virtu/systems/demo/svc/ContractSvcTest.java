@@ -13,7 +13,6 @@ import virtu.systems.demo.api.dto.ContractDto;
 import virtu.systems.demo.api.dto.ContractUpdateRequestDto;
 import virtu.systems.demo.api.dto.ContractsResponseDto;
 import virtu.systems.demo.api.dto.RealEstateCreateDto;
-import virtu.systems.demo.api.dto.RealEstateDto;
 import virtu.systems.demo.dao.entity.Contract;
 import virtu.systems.demo.dao.entity.InsuranceHolder;
 import virtu.systems.demo.dao.entity.RealEstate;
