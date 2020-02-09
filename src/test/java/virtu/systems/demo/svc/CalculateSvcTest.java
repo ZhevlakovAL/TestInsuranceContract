@@ -10,6 +10,8 @@ import virtu.systems.demo.DemoApplication;
 import virtu.systems.demo.api.dto.CalculateInsurancePremiumRequestDto;
 import virtu.systems.demo.api.dto.CalculateInsurancePremiumResponseDto;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
@@ -23,10 +25,16 @@ public class CalculateSvcTest {
     @Test
     public void calculate() {
         CalculateInsurancePremiumRequestDto data = new CalculateInsurancePremiumRequestDto()
-                .constructionYear(2010);
+                .constructionYear(2010)
+                .insuranceAmount(1000L)
+                .square(32.)
+                .type("Квартира")
+                .validityPeriodFrom(new Date(2020, 1, 1))
+                .validityPeriodTo(new Date(2020, 3, 1));
+
         CalculateInsurancePremiumResponseDto responseDto = svc.calculate(data);
         assertEquals(data.getConstructionYear(), responseDto.getConstructionYear());
-        //assertEquals(9090L, responseDto.getInsuranceAmount());
+        assertEquals(52L, responseDto.getInsurancePremium());
 
     }
 }
