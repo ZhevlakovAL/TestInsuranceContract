@@ -1,12 +1,14 @@
 package virtu.systems.demo.map;
 
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import virtu.systems.demo.api.dto.ContractCreateRequestDto;
 import virtu.systems.demo.api.dto.ContractDto;
 import virtu.systems.demo.api.dto.ContractUpdateRequestDto;
 import virtu.systems.demo.api.dto.ContractsResponseDto;
 import virtu.systems.demo.dao.entity.Contract;
+import virtu.systems.demo.dao.entity.InsuranceHolder;
 
 import java.util.List;
 
@@ -24,8 +26,17 @@ public interface ContractMapper {
     }
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "insuranceHolder", source = "insuranceHolderId", qualifiedByName = "toInsuranceHolder")
     Contract toDao(ContractCreateRequestDto dto);
+
+    @Named("toInsuranceHolder")
+    default InsuranceHolder toInsuranceHolder(Long insuranceHolderId) {
+        return InsuranceHolder.builder().id(insuranceHolderId).build();
+    }
 
     Contract toDao(ContractUpdateRequestDto dto);
 
+    @Mapping(target = "insuranceObject", ignore = true)
+    @Mapping(target = "insuranceHolderId", ignore = true)
+    ContractCreateRequestDto toRequestDto(Contract dao);
 }

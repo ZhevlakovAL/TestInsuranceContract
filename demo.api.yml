@@ -149,26 +149,7 @@ paths:
           schema:
             $ref: '#/definitions/ContractsResponse'
 
-  /contract/{id}:
-    parameters:
-      - in: path
-        name: id
-        type: integer
-        format: int64
-        description: "Id of Contract"
-        required: true
-    get:
-      tags:
-        - "Contract"
-      summary: "Contract"
-      operationId: getContractById
-      produces:
-        - 'application/json'
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: '#/definitions/Contract'
+  /contract:
     put:
       tags:
         - "Contract"
@@ -190,6 +171,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Contract'
+
     post:
       tags:
         - "Contract"
@@ -206,6 +188,27 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/ContractCreateRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+
+  /contract/{id}:
+    parameters:
+      - in: path
+        name: id
+        type: integer
+        format: int64
+        description: "Id of Contract"
+        required: true
+    get:
+      tags:
+        - "Contract"
+      summary: "Contract"
+      operationId: getContractById
+      produces:
+        - 'application/json'
       responses:
         200:
           description: OK
