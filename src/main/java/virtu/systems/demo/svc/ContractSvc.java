@@ -48,19 +48,12 @@ public class ContractSvc {
     public ContractDto add(
             final ContractCreateRequestDto createRequestDto
     ) {
-        RealEstate realEstate = RealEstateMapper.INSTANCE.toDao(createRequestDto.getInsuranceObject());
+        final RealEstate realEstate = RealEstateMapper.INSTANCE.toDao(createRequestDto.getInsuranceObject());
         realEstateRepo.save(realEstate);
         Contract contract = ContractMapper.INSTANCE.toDao(createRequestDto);
         contract.setInsuranceObject(realEstate);
         contractRepo.save(contract);
         return ContractMapper.INSTANCE.toDto(contract);
-
-
-/*        return Function.<ContractCreateRequestDto>identity()
-                .andThen(ContractMapper.INSTANCE::toDao)
-                .andThen(contractRepo::save)
-                .andThen(ContractMapper.INSTANCE::toDto)
-                .apply(createRequestDto);*/
     }
 
     @Transactional

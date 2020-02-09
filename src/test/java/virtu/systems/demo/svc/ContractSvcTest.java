@@ -10,8 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import virtu.systems.demo.DemoApplication;
 import virtu.systems.demo.api.dto.ContractCreateRequestDto;
 import virtu.systems.demo.api.dto.ContractDto;
+import virtu.systems.demo.api.dto.ContractUpdateRequestDto;
 import virtu.systems.demo.api.dto.ContractsResponseDto;
 import virtu.systems.demo.api.dto.RealEstateCreateDto;
+import virtu.systems.demo.api.dto.RealEstateDto;
 import virtu.systems.demo.dao.entity.Contract;
 import virtu.systems.demo.dao.entity.InsuranceHolder;
 import virtu.systems.demo.dao.entity.RealEstate;
@@ -209,7 +211,58 @@ public class ContractSvcTest {
 
     @Test
     public void update() {
+        Date someDate = new Date(Instant.now().toEpochMilli());
+        InsuranceHolder insuranceHolder = InsuranceHolder.builder()
+                .firstName("Алексей")
+                .middleName("Леонидович")
+                .lastName("Жевлаков")
+                .passportId("1222")
+                .passportSeries("199191")
+                .birthDate(someDate)
+                .build();
 
+        RealEstate realEstate = RealEstate.builder()
+                .apartment(333)
+                .area("dddd")
+                .constructionYear(3322)
+                .house(32233)
+                .housing("3233")
+                .index("231")
+                .region("region")
+                .settlement("settlement")
+                .square(33.)
+                .state("233")
+                .street("dfff")
+                .structure("fdffff")
+                .type("ddd")
+                .build();
+
+        Contract contract = Contract.builder()
+                .contractNumber(233)
+                .calculatedDate(someDate)
+                .conclusionDate(someDate)
+                .description("desc")
+                .insuranceAmount(233L)
+                .insuranceObject(realEstate)
+                .insurancePremium(333L)
+                .validityPeriodFrom(someDate)
+                .validityPeriodTo(someDate)
+                .insuranceHolder(insuranceHolder)
+                .build();
+
+        insuranceHolderRepo.save(insuranceHolder);
+        realEstateRepo.save(realEstate);
+        contractRepo.save(contract);
+
+        ContractUpdateRequestDto contractRequestDto =
+                ContractMapper.INSTANCE.toUpdateRequestDto(contract);
+
+        contractRequestDto.description("xxx");
+
+        ContractDto contractDto = svc.update(contractRequestDto);
+
+        assertEquals("desc", contract.getDescription());
+        assertEquals("xxx", contractDto.getDescription());
     }
 
 }

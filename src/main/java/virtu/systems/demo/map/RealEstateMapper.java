@@ -1,10 +1,8 @@
 package virtu.systems.demo.map;
 
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import virtu.systems.demo.api.dto.ContractCreateRequestDto;
 import virtu.systems.demo.api.dto.RealEstateCreateDto;
-import virtu.systems.demo.dao.entity.Contract;
+import virtu.systems.demo.api.dto.RealEstateDto;
 import virtu.systems.demo.dao.entity.RealEstate;
 
 @org.mapstruct.Mapper
@@ -16,4 +14,7 @@ public interface RealEstateMapper {
 
     RealEstate toDao(RealEstateCreateDto dto);
 
+    RealEstateDto toDto(RealEstate realEstate);
+
+    RealEstate toDao(RealEstateDto realEstateDto);
 }
