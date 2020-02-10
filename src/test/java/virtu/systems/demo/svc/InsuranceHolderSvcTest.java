@@ -9,10 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import virtu.systems.demo.DemoApplication;
 import virtu.systems.demo.api.dto.InsuranceHolderRequestDto;
+import virtu.systems.demo.api.dto.InsuranceHoldersResponseDto;
 import virtu.systems.demo.dao.repo.InsuranceHolderRepo;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,6 +31,22 @@ class InsuranceHolderSvcTest {
 
     @Test
     void getAll() {
+        repo.deleteAll();
+        val holder = new InsuranceHolderRequestDto()
+                .firstName("Алексей")
+                .middleName("Леонидович")
+                .lastName("Жевлаков")
+                .passportId("1222")
+                .passportSeries("199191")
+                .birthDate(Date.from(Instant.now()));
+        svc.add(holder);
+        InsuranceHoldersResponseDto responseDto = svc.getAll(
+                Optional.of("Жевлако"),
+                Optional.of("Алексей"),
+                Optional.of("Леонидович"),
+                Optional.of("199191"),
+                Optional.of("1222"));
+        assertEquals(1, responseDto.getInsuranceHolders().size());
     }
 
     @Test

@@ -39,7 +39,7 @@ public class InsuranceHolderApiController implements InsuranceHolderApi {
             final Optional<String> middleName,
             final Optional<String> passportSeries,
             final Optional<String> passportId) {
-        return ResponseEntity.ok(service.getAll());
+        return ResponseEntity.ok(service.getAll(lastName, firstName, middleName, passportSeries, passportId));
     }
 
     @Override

@@ -15,6 +15,10 @@ import virtu.systems.demo.map.InsuranceHolderMapper;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static virtu.systems.demo.util.Specs.andSpec;
+import static virtu.systems.demo.util.Specs.equal;
+import static virtu.systems.demo.util.Specs.like;
+
 @Slf4j
 @Service
 public class InsuranceHolderSvc {
@@ -37,8 +41,17 @@ public class InsuranceHolderSvc {
                 .orElseThrow(() -> new RuntimeException(String.format("unknown Id %d", id)));
     }
 
-    public InsuranceHoldersResponseDto getAll() {
+    public InsuranceHoldersResponseDto getAll(final Optional<String> lastName,
+                                              final Optional<String> firstName,
+                                              final Optional<String> middleName,
+                                              final Optional<String> passportSeries,
+                                              final Optional<String> passportId) {
         return Optional.of(Specification.<InsuranceHolder>where(null))
+                .map(andSpec(v -> like("lastName", v), lastName))
+                .map(andSpec(v -> like("firstName", v), firstName))
+                .map(andSpec(v -> like("middleName", v), middleName))
+                .map(andSpec(v -> equal("passportSeries", v), passportSeries))
+                .map(andSpec(v -> equal("passportId", v), passportId))
                 .map(repo::findAll)
                 .map(InsuranceHolderMapper.INSTANCE::toResponse)
                 .get();
