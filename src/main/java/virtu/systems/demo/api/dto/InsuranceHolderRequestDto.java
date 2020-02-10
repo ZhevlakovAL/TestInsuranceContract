@@ -143,7 +143,7 @@ public class InsuranceHolderRequestDto   {
    * Дата рождения. 'YYYY-MM-DD'
    * @return birthDate
   **/
-  @ApiModelProperty(example = "YYYY-MM-DD", value = "Дата рождения. 'YYYY-MM-DD'")
+  @ApiModelProperty(example = "1981-02-07", value = "Дата рождения. 'YYYY-MM-DD'")
 
   @Valid
 

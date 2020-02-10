@@ -303,7 +303,7 @@ definitions:
       birthDate:
         type: string
         format: date
-        example: 'YYYY-MM-DD'
+        example: '1981-02-07'
         description: "Дата рождения. 'YYYY-MM-DD'"
   InsuranceHoldersResponse:
     properties:
